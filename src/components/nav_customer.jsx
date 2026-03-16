@@ -1,4 +1,5 @@
 import { ShoppingBag, ShoppingCart } from "@mui/icons-material";
+import { Link } from "react-router-dom";
 
 
 
@@ -11,13 +12,15 @@ export function Nav_Customer() {
             <h3 className="m-0">ordarat</h3>
         </div>
         <div className="d-flex gap-4 align-items-center">
-            <a href="" className="text-decoration-none text-white btn btn-primary" >
+            <Link to={"/customer"} className="text-decoration-none text-white btn btn-primary" >
                 product
-            </a>
-            <a href="" className="text-decoration-none text-dark">
-                orders
-            </a>
+            </Link>
+            <Link to={"/orders"} className="text-decoration-none text-dark">
+                orders 
+            </Link>
+            <Link to={"/cart"} className="text-decoration-none" >
             <ShoppingCart className="text-success" />
+            </Link>
         </div>
         </nav>
     </div>

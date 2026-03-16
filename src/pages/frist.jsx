@@ -2,6 +2,7 @@ import { ShoppingCart, ShoppingBag } from "@mui/icons-material";
 import axios from "axios";
 import { useEffect, useState } from "react";
 import { Footer } from "../components/footer";
+import { Link } from "react-router-dom";
 export function Frist() {
   const [data, setData] = useState([]);
   useEffect(() => {
@@ -24,12 +25,16 @@ export function Frist() {
       <h1 className="text-uppercase fw-bold mb-0 ms-2">Ordarat</h1>
     </div>
     <div className="d-flex gap-2">
+    <Link to={"/login"} >
       <a href="/login" className="btn btn-primary">
         login
       </a>
+    </Link>
+    <Link to={"/register"} >
       <a href="/register" className="btn btn-link btn-sm text-dark">
         register
       </a>
+    </Link>
     </div>
   </nav>
 </div>

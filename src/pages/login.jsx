@@ -3,12 +3,14 @@ import  { useContext,useEffect,useState } from "react";
 import { Error } from "../errors/error";
 import { Text } from "../context/text";
 import { ShoppingCart } from "@mui/icons-material";
+import { useNavigate } from "react-router-dom";
 
 export function Login() {
     const {setUser,setToken,token,user} = useContext(Text);
 const [email, setEmail] = useState("");
 const [password, setPassword] = useState("");
 const [error, setError] = useState("");
+const url=useNavigate();
 useEffect(()=>{
  localStorage.setItem("token",JSON.stringify(token));   
  localStorage.setItem("user",JSON.stringify(user));
@@ -18,6 +20,7 @@ function login() {
         email: email,
         password: password
     }).then((e) => {
+        url(`/${e.data.user.role}`);
         setUser(e.data.user);
         setToken(e.data.token);
     }).catch((e) => {
