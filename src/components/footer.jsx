@@ -7,7 +7,7 @@ export function Footer() {
             <ShoppingBag className="text-primary"  />
             <h3 className="m-0" >ordarat</h3>
         </div>
-        <p className="fw-lighter w-50 m-0">Ordarat is shop make buy product more easy , delivery will take order to customer</p>
+        <p className="fw-lighter w-100 m-0">Ordarat is a shop that makes buying products easier, and the delivery will bring the orders to the customers.</p>
         </div>
     );
 }

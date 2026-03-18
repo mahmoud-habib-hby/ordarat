@@ -38,16 +38,16 @@ function handelOrder(id){
 }
   return (
     <div className="d-flex flex-column">
-      <Wait e={wait} />
       <div className="d-flex flex-grow-1">
         {/* Sidebar */}
         <Side_delivery />
 
         {/* Main Content */}
         <div
-          className="flex-grow-1 p-4"
+          className="position-relative flex-grow-1 p-4"
           style={{ maxHeight: "100vh", overflowY: "auto" }}
         >
+      <Wait e={wait} />
           <h2 className="mb-4 bg-primary text-white p-1 rounded-2 text-center">All Orders</h2>
 
           <div className="d-flex flex-column gap-3">
@@ -61,7 +61,7 @@ function handelOrder(id){
                 className="bg-white p-3 rounded-4 shadow-sm border"
               >
                 {/* Order Header */}
-                <div className="d-flex align-items-center justify-content-between mb-2">
+                <div className="cart d-flex align-items-center justify-content-between mb-2">
                   <div className="d-flex align-items-center gap-3">
                     <Moped className="text-white rounded-circle fs-1 bg-primary p-2" />
                     <div>
@@ -87,11 +87,11 @@ function handelOrder(id){
                 <hr className="my-2" />
 
                 {/* Order Footer */}
-                <div className="d-flex justify-content-between align-items-center">
+                <div className="cart d-flex justify-content-between align-items-center">
                   <p className="mb-0">
                     Time: {new Date(order.created_at).toLocaleString()}
                   </p>
-                  <div>
+                  <div className="cart gap-2">
                     {order.website_url && (
                       <Link
                         to={`/details/${order.id}`}

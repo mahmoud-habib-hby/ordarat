@@ -18,6 +18,8 @@ import { Order_admin } from './admin/orders'
 import { OrderDetails_admin } from './admin/orderDetails'
 import { UpdateProduct } from './admin/updateProduct'
 import { Delivery_details } from './admin/deliveryDetails'
+import { CustomerInformation } from './customer/information'
+import { Register } from './pages/register'
 
 function App() {
 
@@ -27,6 +29,7 @@ function App() {
     <Routes >
     <Route path='/' element={<Frist />} />
     <Route path='/login' element={<Login />} />
+    <Route path='/register' element={<Register />} />
     <Route path='/customer' element={<Products />} />
     <Route path='/cart' element={<Cart />} />
     <Route path='/orders' element={<Orders/>} />
@@ -41,6 +44,7 @@ function App() {
     <Route path='/orders_admin' element={<Order_admin/>} />
     <Route path='/orderDetails_admin/:id' element={<OrderDetails_admin/>} />
     <Route path='/delivery_details/:id' element={<Delivery_details/>} />
+    <Route path='/customer-information' element={<CustomerInformation/>} />
     {/* <Route path='/register' element={<Register />} /> */}
     {/* <Frist /> */}
     {/* <Login /> */}

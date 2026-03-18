@@ -26,13 +26,17 @@ export function Prodcuts() {
         },
       })
       .then((e) => {
+              const filteredData = e.data.filter(
+        (item) => item.stock === 0
+      );
+     localStorage.setItem("emptyStock",filteredData.length)
           SetData(e.data);
           Setwait(false)
       })
       .catch((e) => {
         console.log(e);
       });
-  });
+  },[token]);
 function handelProduct(){
   const formData = new FormData();
   formData.append("name", AddProduct.name);
@@ -89,19 +93,20 @@ function handelActive(id){
 }
   return (
     <div style={{ height: "100vh" }} className="bg-light">
-      <Wait e={wait} />
-      <div className="d-flex gap-3">
+      <div className="d-flex">
         <Side_admin />
-        <div className="w-100 p-4 container"
-        style={{height:"90vh",overflowY:"scroll"}}
+        <div className="w-100 p-5 position-relative"
+        style={{height:"90vh",overflowY:"auto"}}
         >
+      <Wait e={wait} />
+
           <h2 className="bg-primary text-white text-center rounded-3">
             Products
           </h2>
           <div className="d-flex flex-column">
             <div className="mt-3 w-100 d-flex flex-column align-items-center gap-2">
               <h4 className="text-primary">Add Products</h4>
-              <div className="d-flex gap-2 w-75">
+              <div className="product d-flex gap-2 w-75">
                 <input
                   type="text"
                   placeholder="name"
@@ -117,7 +122,7 @@ function handelActive(id){
                   
                 />
               </div>
-              <div className="d-flex gap-2 w-75">
+              <div className="product d-flex gap-2 w-75">
                 <input
                   type="text"
                   placeholder="description"
@@ -132,7 +137,7 @@ function handelActive(id){
                   onChange={(e)=>SetAddProduct({...AddProduct,price:e.target.value})}
                 />
               </div>
-              <div className="w-75 d-flex gap-2">
+              <div className="product w-75 d-flex gap-2">
                 <input
                   type="number"
                   placeholder="stock"
@@ -202,7 +207,7 @@ function handelActive(id){
           <td style={{maxWidth:"200px"}}>
             {product.description}
           </td>
-        <td style={{maxWidth:"200px"}}>
+        <td style={{maxWidth:"200px"}} className="">
             <Link to={`/update/${product.id}`} className="btn btn-success p-1 mx-3">Update</Link>
             {product.status !== "deleted" && (
   <button

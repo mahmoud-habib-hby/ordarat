@@ -7,14 +7,13 @@ export function Provider({ children }) {
     const token_storage = localStorage.getItem("token");
     const delivery_storage = localStorage.getItem("delivery");
     const cart_storage = localStorage.getItem("cartNumber");
-    const product_storage = localStorage.getItem(" productNumber");
+
     const [user, setUser] = useState(user_storage ? JSON.parse(user_storage) : null);
     const [token, setToken] = useState(token_storage ? JSON.parse(token_storage) : null);
     const [CartNumber, setCartNumber] = useState(JSON.parse(cart_storage)||null);
     const [DeliveryNumber, setDeliveryNumber] = useState(delivery_storage? JSON.parse(delivery_storage):null);
-    const [productNumber, setproductNumber] = useState(product_storage? JSON.parse(product_storage):null);
     return (
-        <Text.Provider value={{ user, setUser, token, setToken, CartNumber, setCartNumber,DeliveryNumber,setDeliveryNumber ,productNumber,setproductNumber}}>
+        <Text.Provider value={{ user, setUser, token, setToken, CartNumber, setCartNumber,DeliveryNumber,setDeliveryNumber }}>
             {children}
         </Text.Provider>
     );

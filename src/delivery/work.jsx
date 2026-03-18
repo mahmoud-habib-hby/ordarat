@@ -52,13 +52,13 @@ export function Work() {
   }
   return (
     <div className="d-flex flex-column bg-light">
-      <Wait e={wait} />
       <div className="d-flex">
         <Side_delivery />
         <div
-          className="container p-4"
+          className="w-100 position-relative p-3"
           style={{ maxHeight: "90vh", overflowY: "auto" }}
         >
+      <Wait e={wait} />
           <h2 className="mb-4 bg-primary text-white p-1 rounded-2 text-center">Order Now</h2>
           <div className="d-flex flex-column gap-3">
             {data.map((order) => (
@@ -67,7 +67,7 @@ export function Work() {
                 className="bg-white p-3 rounded-4 shadow-sm border"
               >
                 {/* Order Header */}
-                <div className="d-flex align-items-center justify-content-between mb-2">
+                <div className="cart d-flex align-items-center justify-content-between mb-2">
                   <div className="d-flex align-items-center gap-3">
                     <div>
                       <p className="mb-1 fw-bold text-uppercase">
@@ -105,11 +105,11 @@ export function Work() {
 
                 <hr className="my-2" />
                 {/* Order Footer */}
-                <div className="d-flex justify-content-between align-items-center">
+                <div className="cart d-flex justify-content-between align-items-center">
                   <p className="mb-0">
                     Time: {new Date(order.created_at).toLocaleString()}
                   </p>
-                  <div className="gap-1 d-flex">
+                  <div className="cart gap-1 d-flex">
                     {order.website_url && (
                       <Link
                         to={`/details/${order.id}`}

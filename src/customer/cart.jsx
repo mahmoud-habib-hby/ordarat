@@ -4,11 +4,13 @@ import { Text } from "../context/text";
 import { Nav_Customer } from "../components/nav_customer";
 import { Footer } from "../components/footer";
 import { Error } from "../errors/error";
+import { Wait } from "../components/wait";
 
 export function Cart() {
   const { token } = useContext(Text);
   const [items, setItems] = useState([]);
   const [error, setError] = useState([]);
+  const [wait,Setwait]=useState(true);
   const [buyData, setBuyData] = useState({
     id: 0,
     location: "",
@@ -24,14 +26,15 @@ export function Cart() {
         },
       })
       .then((e) => {
+        Setwait(false);
+      console.log(e)
         setBuyData({ ...buyData, id: e.data?.id });
         setItems(e.data.items);
-        localStorage.setItem("cartNumber", e.data.items.length);
       })
       .catch((e) => {
         console.log(e);
       });
-  }, [token, buyData]);
+  }, [token]);
   function handleDelete(id) {
     axios
       .delete(`http://127.0.0.1:8000/api/cart/remove_product/${id}`, {
@@ -40,47 +43,53 @@ export function Cart() {
         },
       })
       .then((e) => {
-        // window.location.reload();
+        window.location.reload();
         console.log(e.data.message);
       })
       .catch((e) => {
         console.log(e);
       });
   }
-  function handleBuy() {
-    console.log(buyData);
-    axios
-      .post(
-        `http://127.0.0.1:8000/api/cart/buy_order/${buyData.id}`,
-        {
-          address: buyData.location,
-          website_url: buyData.location_url,
-          phone: buyData.phone,
-          total_price: Number(total.current.value),
+function handleBuy() {
+  const totalPrice = items.reduce(
+    (acc, item) => acc + item.price * item.quantity,
+    0
+  );
+
+  axios
+    .post(
+      `http://127.0.0.1:8000/api/cart/buy_order/${buyData.id}`,
+      {
+        address: buyData.location,
+        website_url: buyData.location_url,
+        phone: buyData.phone,
+        total_price: totalPrice,
+      },
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
         },
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        },
-      )
-      .then((e) => {
-        console.log(e);
-        window.location.reload();
-      })
-      .catch((e) => {
-        console.log(e.response.data.errors);
-        setError(e.response.data.errors);
-      });
-  }
+      }
+    )
+    .then((e) => {
+      console.log(e);
+      window.location.reload();
+    })
+    .catch((e) => {
+      console.log(e.response?.data);
+      setError(e.response?.data?.errors || []);
+    });
+}
   return (
     <div className="bg-light" style={{ minHeight: "100vh" }}>
       <Nav_Customer />
+      <div className="position-relative" style={{height:"80vh",overflowY:"auto"}}>
+      <Wait e={wait} />
       <div className="container py-3">
         <h2 className="py-3">Your Shopping Cart</h2>
-        <div className="d-flex justify-content-between w-100 gap-2">
+        <div className="cart d-flex justify-content-between w-100 gap-2">
           <div className="d-flex flex-column gap-2">
-            {items && items.length > 0 ? (
+            {items && items.length> 0 ? (
               items.map((item) => (
                 <div
                   key={item.id}
@@ -182,6 +191,8 @@ export function Cart() {
           </div>
         </div>
       </div>
+      </div>
+      
       <Footer />
     </div>
   );

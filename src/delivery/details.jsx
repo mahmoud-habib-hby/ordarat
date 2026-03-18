@@ -3,6 +3,7 @@ import { useParams } from "react-router-dom";
 import { Text } from "../context/text";
 import axios from "axios";
 import { Side_delivery } from "../components/side_delivery";
+import { Footer } from "../components/footer";
 
 export function Details() {
   const { id } = useParams();
@@ -35,9 +36,10 @@ export function Details() {
   const orderInfo = orderData[0];
 
   return (
+    <div className="d-flex flex-column">
     <div className="d-flex">
       <Side_delivery />
-      <div className="p-4 w-75">
+      <div className="w-100 p-4 w-75">
         <h2 className="mb-4 bg-primary text-white p-1 rounded-2 text-center">
           Order Details (#{orderInfo.order_id})
         </h2>
@@ -105,6 +107,9 @@ export function Details() {
           </table>
         </div>
       </div>
+    </div>
+      
+      <Footer/>
     </div>
   );
 }

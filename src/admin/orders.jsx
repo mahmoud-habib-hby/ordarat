@@ -22,6 +22,7 @@ const search=useRef();
       })
       .then((res) => {
         Setdata(res.data);
+        localStorage.setItem("ordars",res.data.length)
         Setwait(false)
       })
       .catch((err) => {
@@ -56,10 +57,10 @@ function handelMoney(id){
 }
   return (
     <div className="bg-light" style={{ height: "100vh" }}>
-      <Wait e={wait} />
-      <div className="d-flex gap-4">
+      <div className="d-flex">
         <Side_admin />
-        <div className="p-3 w-100" style={{ height: "90vh", overflowY: "auto" }}>
+        <div className="p-5 w-100 position-relative" style={{ height: "90vh", overflowY: "auto" }}>
+      <Wait e={wait} />
           <h1 className="rounded-2 text-white text-center bg-primary w-100">
             Orders
           </h1>
@@ -74,7 +75,7 @@ function handelMoney(id){
           />
           <div class="input-group-append">
             <button
-              class="input-group-text btn btn-primary rounded-start-0"
+              class="input-group-text z-0 btn btn-primary rounded-start-0"
               onClick={() => handleSearch()}
             >
               search

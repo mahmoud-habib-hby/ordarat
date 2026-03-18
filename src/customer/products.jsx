@@ -3,6 +3,7 @@ import { useContext, useEffect, useRef, useState } from "react";
 import { Text } from "../context/text";
 import { Nav_Customer } from "../components/nav_customer";
 import { Footer } from "../components/footer";
+import { Wait } from "../components/wait";
 
 export function Products() {
   const { token } = useContext(Text);
@@ -10,6 +11,7 @@ export function Products() {
   const [categorie, setCategorie] = useState([]);
   const [Allcategorie, setAllCategorie] = useState(0);
   const [quantity, setQuantity] = useState({});
+  const [wait,Setwait]=useState(true)
   const [ms, setMs] = useState("");
   const search = useRef(null);
 
@@ -24,6 +26,7 @@ export function Products() {
         setCategorie(categories);
         localStorage.setItem("productNumber", data.length);
         setProducts(data);
+        Setwait(false);
       })
       .catch((error) => console.log(error.response.data));
   }, [token, Allcategorie]);
@@ -56,15 +59,18 @@ export function Products() {
       .catch((error) => setMs(error.response.data.message));
   }
 
-  function handleSearch() {
-    axios
-      .get("http://127.0.0.1:8000/api/customer/search/product", {
-        headers: { Authorization: `Bearer ${token}` },
-        params: { search: search.current.value },
-      })
-      .then((response) => setProducts(response.data))
-      .catch((error) => console.log(error.response.data));
-  }
+function handleSearch() {
+  axios
+    .get("http://127.0.0.1:8000/api/customer/search/product", {
+      headers: { Authorization: `Bearer ${token}` },
+      params: { search: search.current.value },
+    })
+    .then((response) => {
+      const activeProducts = response.data.filter((p) => p.status === "active");
+      setProducts(activeProducts);
+    })
+    .catch((error) => console.log(error.response.data));
+}
 
   // اخفاء الرسالة بعد ثانيتين
   useEffect(() => {
@@ -87,7 +93,9 @@ export function Products() {
           {ms}
         </div>
       )}
+      <div className="position-relative" style={{height:'80vh',overflowY:'auto'}}>
 
+        <Wait e={wait} />
       <div className="container flex-column-reverse d-flex align-items-center justify-content-between w-100 my-4 px-5">
         <div className="flex-wrap w-auto d-flex gap-5">
           {categorie.map((category, index) =>
@@ -102,7 +110,7 @@ export function Products() {
             ) : null
           )}
           <p
-            className="btn btn-outline-primary"
+            className="btn btn-primary"
             onClick={() => setAllCategorie(Allcategorie + 1)}
           >
             All Category
@@ -112,7 +120,7 @@ export function Products() {
           <input type="text" className="form-control" placeholder="search" ref={search} />
           <div className="input-group-append">
             <span
-              className="input-group-text btn btn-primary rounded-start-0"
+              className="z-0 input-group-text btn btn-primary rounded-start-0"
               onClick={handleSearch}
             >
               search
@@ -121,10 +129,10 @@ export function Products() {
         </div>
       </div>
 
-      <div className="container py-4 bg-light">
-        <div className="row g-4">
+      <div className="container bg-light">
+        <div className="row g-4 mb-3">
           {products.map((e) => (
-            <div key={e.id} className="col-4 col-md-3">
+            <div key={e.id} className="col-12 col-sm-6 col-md-4 col-lg-3">
               <div className="card h-100 border-0 shadow-sm">
                 <img
                   src={`http://127.0.0.1:8000/storage/${e.image}`}
@@ -140,26 +148,34 @@ export function Products() {
                   <p className="fw-bold text-primary mb-0">price: ${e.price}</p>
 
                   <hr className="my-2" />
-                  <div className="d-flex justify-content-center align-items-center gap-3">
+                  {e.stock!==0?(
+
+                  <div className="d-flex flex-column justify-content-center align-items-center">
+                    <p className="fs-6 m-0">stock</p>
                     <input
                       type="number"
                       value={quantity[e.id] || 1}
                       onChange={(x) =>
                         setQuantity({ ...quantity, [e.id]: x.target.value })
                       }
-                      className="w-25 text-center form-control"
+                      className="stock w-50 form-control"
                       min="1"
                       max={e.stock}
                     />
-                    <button className="btn btn-primary" onClick={() => AddToCart(e.id)}>
+                    <button className="mt-2 btn btn-primary" onClick={() => AddToCart(e.id)}>
                       Add To Cart
                     </button>
                   </div>
+                  ):<p className="text-danger mt-4 fw-bold text-center">
+                  stock empty
+                  </p>}
+                  
                 </div>
               </div>
             </div>
           ))}
         </div>
+      </div>
       </div>
 
       <Footer />

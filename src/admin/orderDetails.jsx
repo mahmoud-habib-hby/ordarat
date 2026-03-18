@@ -28,6 +28,9 @@ export function OrderDetails_admin() {
         setLoading(false);
       });
   }, [id, token]);
+   if (loading) return <p className="p-4">Loading order details...</p>;
+  if (!orderData || orderData.length === 0)
+    return <p className="p-4">No products found for this order.</p>;
 
 
   const orderInfo = orderData[0];
@@ -37,7 +40,7 @@ export function OrderDetails_admin() {
       <Wait e={loading}/>
       <div className="d-flex" style={{ height: "90vh" }}>
         <Side_admin />
-        <div className="container p-4 w-100" style={{ overflowY: "auto" }}>
+        <div className="p-4 w-100" style={{ overflowY: "auto" }}>
           <h2 className="mb-4 bg-primary text-white p-1 rounded-2 text-center">
             Order Details #{orderInfo.order_id}
           </h2>
